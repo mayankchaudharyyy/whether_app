@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            color: #fff;
+            text-align: center;
+            padding: 50px;
+        }
+        .container {
+            max-width: 400px;
+            margin: auto;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        input {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            background: #ff6b6b;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+        button:hover {
+            background: #ff4757;
+        }
+        #weather {
+            margin-top: 20px;
+        }
+        .weather-info {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Weather App</h1>
+        <input type="text" id="location" placeholder="Enter location">
+        <button onclick="getWeather()">Get Weather</button>
+        <div id="weather"></div>
+    </div>
+    
+    <script>
+        function getWeather() {
+            const location = document.getElementById('location').value;
+            const apiKey = '15631107fe7e4032be5162800250202';
+            const url = `http://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${location}&aqi=no`;
+            
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('weather').innerHTML = `
+                        <div class="weather-info">
+                            <h2>${data.location.name}, ${data.location.country}</h2>
+                            <p>Temperature: ${data.current.temp_c}°C</p>
+                            <p>Condition: ${data.current.condition.text}</p>
+                            <img src="${data.current.condition.icon}" alt="Weather Icon">
+                        </div>
+                    `;
+                })
+                .catch(error => {
+                    document.getElementById('weather').innerHTML = '<p>Error fetching weather data.</p>';
+                });
+        }
+    </script>
+</body>
+</html>
